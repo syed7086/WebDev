@@ -43,6 +43,7 @@ const startQuiz = () => {
 }
 
 const showQuestion = () => {
+    resetBtn();
     let currentQuestion = questions[currentQuestionIndex];
     let questionNo = currentQuestionIndex + 1;
     questionElement.innerHTML = questionNo + '. ' + currentQuestion.question; 
@@ -52,8 +53,36 @@ const showQuestion = () => {
         button.innerHTML = answer.text;
         button.classList.add('btn');
         answerButton.appendChild(button)
+        if(answer.correct){
+            button.dataset.correct = answer.correct;
+        }
+        button.addEventListener('click', selectAnswer);
     });
 };
+
+function resetBtn(){
+    nextButton.style.display = 'none';
+    while(answerButton.firstChild){
+        answerButton.removeChild(answerButton.firstChild);
+    }
+}
+
+const selectAnswer = (e) =>{
+    const selectedBtn = e.target;
+    const isCorrect = selectedBtn.dataset.correct === 'true';
+    if(isCorrect){
+        selectedBtn.classList.add('correct');
+    }else{
+        selectedBtn.classList.add('incorrect');
+    };
+    Array.from(answerButton.children).forEach(button => {
+        if(button.dataset.correct === 'true'){
+            button.classList.add('correct');
+        }
+        button.disabled = true;
+    })
+    nextButton.style.display = 'block';
+}
 
 startQuiz();
 
