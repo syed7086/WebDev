@@ -2,10 +2,10 @@ const questions = [
     {
         question: 'Which is larget animal in the world',
         answers: [
-            {text: "Shark", correct: false},
+            {text: "Whale", correct: false},
             {text: "Shark", correct: true},
-            {text: "Shark", correct: false},
-            {text: "Shark", correct: false},
+            {text: "Dog", correct: false},
+            {text: "Seahorse", correct: false},
         ]
     },
     {
@@ -72,6 +72,7 @@ const selectAnswer = (e) =>{
     const isCorrect = selectedBtn.dataset.correct === 'true';
     if(isCorrect){
         selectedBtn.classList.add('correct');
+        score++;
     }else{
         selectedBtn.classList.add('incorrect');
     };
@@ -83,6 +84,31 @@ const selectAnswer = (e) =>{
     })
     nextButton.style.display = 'block';
 }
+
+function handleNextButton(){
+    currentQuestionIndex++;
+    if(currentQuestionIndex < questions.length){
+        showQuestion();
+    }else{
+        showScore();
+    }
+}
+
+function showScore() {
+    resetBtn();
+    questionElement.innerHTML = `You Scored ${score} out of ${questions.length}!`;
+    nextButton.innerHTML = 'Play Again';
+    nextButton.style.display = 'block';
+};
+
+
+nextButton.addEventListener('click', () => {
+    if(currentQuestionIndex < questions.length){
+        handleNextButton();
+    }else{
+        startQuiz();
+    }
+})
 
 startQuiz();
 
